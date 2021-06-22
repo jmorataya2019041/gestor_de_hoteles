@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center perfil">
+    <div class="col col-lg-4">
+      <form>
+        <div class="mb-3">
+          <div class="mb-3">
+            <label for="inputIdSee" class="form-label">Id</label>
+            <input type="text" class="form-control" id="inputIdSee" name="id" #id="ngModel" [(ngModel)]="usuarioModel._id" disabled>
+          </div>
+          <label for="inputNombreSee" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="inputNombreSee" name="nombre" #nombre="ngModel" [(ngModel)]="usuarioModel.nombre" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="inputUsuarioSee" class="form-label">Usuario</label>
+          <input type="text" class="form-control" id="inputUsuarioSee" name="usuario" #usuario="ngModel" [(ngModel)]="usuarioModel.usuario" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="inputEmailSee" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" id="imputEmailSee" name="email" #email="ngModel" [(ngModel)]="usuarioModel.email" disabled>
+        </div>
+        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+        data-bs-target="#modalEditarPerfil" (click)="obtenerUsuarioId(usuarioModel._id) "><i class="bi bi-pencil-square"></i> Editar</button>
+        <button class="btn btn-outline-danger eliminarPerfil" type="button" data-bs-toggle="modal"
+        data-bs-target="#modalEliminarPerfil" (click)="obtenerUsuarioId(usuarioModel._id) "><i class="bi bi-trash"></i> Eliminar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar el perfil -->
+<div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Cuenta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="inputNombre" class="form-label">Nombre</label>
+            <input type="text" placeholder="Ingrese su nombre" class="form-control" id="inputNombre" name="nombre" #nombre="ngModel" [(ngModel)]="idUsuarioModel.nombre">
+          </div>
+          <div class="mb-3">
+            <label for="inputUsuario" class="form-label">Usuario</label>
+            <input type="text" placeholder="Ingrese su correo usuario" class="form-control" id="inputUsuario" name="usuario" #usuario="ngModel" [(ngModel)]="idUsuarioModel.usuario">
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail" class="form-label">Correo Electrónico</label>
+            <input type="email" placeholder="Ingrese su correo electrónico" class="form-control" id="imputEmail" name="email" #email="ngModel" [(ngModel)]="idUsuarioModel.email">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="editarPerfil()"><i class="bi bi-save2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar el usuario -->
+<div class="modal fade" id="modalEliminarPerfil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Cuenta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar la cuenta de: <b>{{usuarioModel.nombre}}</b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="eliminarPerfil(usuarioModel._id)" ><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

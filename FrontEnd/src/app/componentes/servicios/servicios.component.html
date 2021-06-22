@@ -1,0 +1,99 @@
+<br>
+<br>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="col col-lg-8">
+    <div class="input-group mb-3">
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#agregarServicio"><i class="bi bi-plus-lg"></i> Agregar Servicio</button>
+    </div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of getService">
+          <td> {{service.nombre}} </td>
+          <td> {{service.description}} </td>
+          <td><div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarServicio" (click)="obtenerServicio(service._id) " ><i class="bi bi-pencil"></i> Editar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminarServicio" (click)="obtenerServicio(service._id)" ><i class="bi bi-trash"></i> Eliminar</button>
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para agregar un servicio -->
+<div class="modal fade" id="agregarServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Servicio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nombreServicio" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombreServicio" placeholder="Ingrese el nombre del servicio" name="nombre" #nombre="ngModel" [(ngModel)]="servicio.nombre">
+        </div>
+        <div class="mb-3">
+          <label for="descripcionServicio" class="form-label">Descripción</label>
+          <textarea class="form-control" id="descripcionServicio" rows="3" placeholder="Ingrese la descripción de su servicio" name="description" #description="ngModel" [(ngModel)]="servicio.description"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="addService()"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar un servicio -->
+<div class="modal fade" id="editarServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Servicio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nombreServicio2" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombreServicio2" placeholder="Ingrese el nombre del servicio" name="nombre" #nombre="ngModel" [(ngModel)]="Idservicio.nombre">
+        </div>
+        <div class="mb-3">
+          <label for="descripcionServicio2" class="form-label">Descripción</label>
+          <textarea class="form-control" id="descripcionServicio2" rows="3" placeholder="Ingrese la descripción de su servicio" name="description" #description="ngModel" [(ngModel)]="Idservicio.description"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="editService()"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar un servicio -->
+<div class="modal fade" id="eliminarServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Servicio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar el servicio: <b> {{Idservicio.nombre}} </b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="deleteService(Idservicio._id)"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

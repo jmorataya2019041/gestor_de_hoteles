@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <img src="assets/Logo Gestor Hoteles.png" class="logo" alt="icono">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/login" routerLinkActive="active" *ngIf="! _usuarioService.getIdentidad()">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active" *ngIf="_usuarioService.getIdentidad()">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App' ">
+            Funciones
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="/usuarios"><i class="bi bi-people"></i> Usuarios</a></li>
+            <li><a class="dropdown-item" routerLink="/addHotel"><i class="bi bi-node-plus"></i> Agregar Hotel</a></li>
+            <li><a class="dropdown-item" routerLink="/servicios"><i class="bi bi-clipboard-plus"></i> Gestión de Servicios</a></li>
+            <li><a class="dropdown-item" routerLink="/eventos"><i class="bi bi-journal-richtext"></i> Gestión de Eventos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_Hotel' ">
+            Funciones
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="/usuarios"><i class="bi bi-people"></i> Usuarios</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/reservation-type" routerLinkActive="active" *ngIf="_usuarioService.getIdentidad()">Tipos de Reservación</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/addReservation" routerLinkActive="active" *ngIf="_usuarioService.getIdentidad()">Crear Reservación</a>
+        </li>
+      </ul>
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="_usuarioService.getIdentidad()">
+          {{_usuarioService.getIdentidad().nombre}}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" [routerLink]=" ['/perfil-usuario', _usuarioService.getIdentidad()._id] " >Perfil</a></li>
+          <li><a class="dropdown-item" [routerLink]="['/reservation-for-user', _usuarioService.getIdentidad()._id] ">Mis Reservaciones</a></li>
+          <li><a class="dropdown-item" (click)="_usuarioService.logout()">Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

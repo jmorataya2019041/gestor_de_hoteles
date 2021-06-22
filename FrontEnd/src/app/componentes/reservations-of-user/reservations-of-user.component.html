@@ -1,0 +1,22 @@
+<br>
+<div class="container">
+  <div class="row">
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10" *ngFor="let reservation of ReservationModel">
+      <div class="card mb-3" style="max-width: 21rem;">
+        <div class="card-header">
+          <h5 class="card-title"> {{reservation.usuario.nombre}} </h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Fecha Inicio: {{reservation.fechaInicio}} </p>
+          <p class="card-text">Fecha Final: {{reservation.fechaFinal}} </p>
+          <p class="card-text">Evento: {{reservation.evento.nombre}} </p>
+          <p class="card-text">Tipo de reservación: {{reservation.tipoReservacion.nombre}} </p>
+          <p class="card-text">Total: Q{{reservation.total}} </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

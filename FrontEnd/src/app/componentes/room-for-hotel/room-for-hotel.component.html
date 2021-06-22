@@ -1,0 +1,153 @@
+<br>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-7">
+      <button class="btn btn-outline-dark" *ngIf="_usuarioService.getIdentidad()._id === hotel.admin._id" data-bs-toggle="modal" data-bs-target="#agregarHabitación"><i class="bi bi-door-closed-fill"></i>
+        Agregar Habitación
+      </button>
+      <form>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" #nombre="ngModel" [(ngModel)]="hotel.nombre" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="Precio" class="form-label">Administrador</label>
+          <input type="text" class="form-control" id="exampleInputPassword1" name="administrador" #administrador="ngModel" [(ngModel)]="hotel.admin.nombre" disabled>
+        </div>
+        <div>
+          <label for="Habitaciones" class="form-label">Habitaciones:</label>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Código de Habitación</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Disponibilidad</th>
+              <th scope="col" *ngIf="_usuarioService.getIdentidad()._id === hotel.admin._id">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of habitacionModel">
+              <th> {{room.room_code}} </th>
+              <td>Q{{room.precio}} </td>
+              <td *ngIf="room.disponibility === true">
+                <button class="btn btn-success">Disponible</button>
+              </td>
+              <td *ngIf="room.disponibility === false">
+                <button class="btn btn-danger">
+                  No Disponible
+                </button>
+              </td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-primary" (click)="obtenerHabitacion(room._id)" *ngIf="_usuarioService.getIdentidad()._id === hotel.admin._id" data-bs-toggle="modal" data-bs-target="#editarHabitación"><i class="bi bi-pencil-square"></i> Editar</button>
+                  <button type="button" class="btn btn-primary" (click)="obtenerHabitacion(room._id)" *ngIf="_usuarioService.getIdentidad()._id === hotel.admin._id" data-bs-toggle="modal" data-bs-target="#eliminarHabitación"><i class="bi bi-trash"></i> Eliminar</button>
+                </div>
+              </td>
+          </tbody>
+        </table>
+        <div>
+          <label for="Habitaciones" class="form-label">Eventos:</label>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let events of getEventos">
+              <th> {{events.nombre}} </th>
+              <td> {{events.descripcion}} </td>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar una nueva habitación -->
+<div class="modal fade" id="agregarHabitación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Habitación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="room_code1" class="form-label">Room Code</label>
+            <input type="text" class="form-control" id="room_code1" name="room_code" #room_code="ngModel" [(ngModel)]="habitacionAdd.room_code">
+          </div>
+          <div class="mb-3">
+            <label for="precio1" class="form-label">Precio</label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">Q</span>
+              <input type="text" class="form-control" placeholder="Precio de la habitación, solamente valor numérico" name="precio" #precio="ngModel" [(ngModel)]="habitacionAdd.precio">
+            </div>
+          </div>
+        <label for="inputAdmin" class="form-label">Hotel</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="admin" #admin="ngModel" [(ngModel)]="habitacionAdd.hotel">
+          <option [value]="hotel._id"> {{hotel.nombre}} </option>
+        </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="addRoom()"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar la habitación -->
+<div class="modal fade" id="editarHabitación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Habitación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="room_code2" class="form-label">Room Code</label>
+            <input type="text" class="form-control" id="room_code2" name="room_code" #room_code="ngModel" [(ngModel)]="habitacionGetId.room_code">
+          </div>
+          <div class="mb-3">
+            <label for="precio2" class="form-label">Precio</label>
+            <div class="input-group flex-nowrap">
+              <span class="input-group-text" id="addon-wrapping">Q</span>
+              <input type="text" class="form-control" placeholder="Precio de la habitación, solamente valor numérico" name="precio" #precio="ngModel" [(ngModel)]="habitacionGetId.precio">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="editRoom()"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar la habitación -->
+<div class="modal fade" id="eliminarHabitación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Habitación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar la habitación: <b> {{habitacionGetId.room_code}} </b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="deleteRoom(habitacionGetId._id)"><i class="bi bi-check2"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

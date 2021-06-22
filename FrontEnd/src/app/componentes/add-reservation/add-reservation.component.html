@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center addReservation">
+    <div class="col col-lg-4">
+      <form>
+        <div class="mb-3">
+          <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+          <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="fechaInicio" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="reservationAdd.fechaInicio">
+        </div>
+        <div class="mb-3">
+          <label for="fechaFinal" class="form-label">Fecha Final</label>
+          <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="fechaFinal" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="reservationAdd.fechaFinal">
+        </div>
+        <label for="inputAdmin" class="form-label">Tipo de Reservación</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="tipoReservacion" #tipoReservacion="ngModel" [(ngModel)]="reservationAdd.tipoReservacion">
+          <option *ngFor="let typeReserv of getReservationType" [value]="typeReserv._id"> {{typeReserv.nombre}} </option>
+        </select>
+        <label for="inputAdmin" class="form-label">Evento</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="evento" #evento="ngModel" [(ngModel)]="reservationAdd.evento"> <!--Se agrega el ngModel para tomar el dato-->
+          <option *ngFor="let events of getEventos" [value]="events._id"> {{events.nombre}} </option>
+        </select>
+        <button type="button" class="btn btn-outline-secondary" (click)="addReservation()"><i class="bi bi-save-fill"></i> Crear Reservación</button>
+      </form>
+    </div>
+  </div>
+</div>

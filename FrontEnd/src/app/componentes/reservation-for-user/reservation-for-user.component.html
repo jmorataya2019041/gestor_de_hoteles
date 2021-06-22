@@ -1,0 +1,125 @@
+<br>
+<div class="container">
+  <div class="row">
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10" *ngFor="let reservation of reservationforuserModel">
+      <div class="card mb-3" style="max-width: 21rem;">
+        <div class="card-header">
+          <h5 class="card-title"> {{reservation.usuario.nombre}} </h5>
+          <small>
+            <div class="dropdown">
+              <button class="btn btn-light btn-sm" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-caret-right-fill"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#eliminarReservación" (click)="reservationforId(reservation._id)">Eliminar</a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editarReservación" (click)="reservationforId(reservation._id)">Editar</a></li>
+              </ul>
+            </div>
+          </small>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Fecha Inicio: {{reservation.fechaInicio}} </p>
+          <p class="card-text">Fecha Final: {{reservation.fechaFinal}} </p>
+          <p class="card-text">Evento: {{reservation.evento.nombre}} </p>
+          <p class="card-text">Tipo de reservación: {{reservation.tipoReservacion.nombre}} </p>
+          <p class="card-text">Total: Q{{reservation.total}} </p>
+          <button class="btn btn-outline-dark" type="button" [routerLink]="['/room-for-reservation', reservation._id]">Habitaciones</button>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#agregarHabitación" (click)="reservationforId(reservation._id)">Agregar Habitación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Modal para agregar habitación a la reservación-->
+<div class="modal fade" id="agregarHabitación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Habitación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <label for="inputRoom" class="form-label">Habitaciones</label>
+          <select class="form-select mb-3" aria-label="Default select example" name="room" #room="ngModel" [(ngModel)]="modeloRoom.room"><!--Se coloca el ngModel-->
+            <option *ngFor="let rooms of roomDisponibles" [value]="rooms._id">Hotel: {{rooms.hotel.nombre}} || Código: {{rooms.room_code}} </option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="addRoominReservation()"><i class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para eliminar la reservación-->
+<div class="modal fade" id="eliminarReservación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Reservación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar la Reservación?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="deleteReservation(reservationId._id)"
+          ><i class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para editar la reservación-->
+<div class="modal fade" id="editarReservación" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Reservación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="fechaInicio" name="fechaInicio" #fechaInicio="ngModel" [(ngModel)]="reservationId.fechaInicio">
+          </div>
+          <div class="mb-3">
+            <label for="fechaFinal" class="form-label">Fecha Final</label>
+            <input type="text" placeholder="YYYY-MM-DD" class="form-control" id="fechaFinal" name="fechaFinal" #fechaFinal="ngModel" [(ngModel)]="reservationId.fechaFinal">
+          </div>
+          <label for="inputAdmin" class="form-label">Tipo de Reservación</label>
+          <select class="form-select mb-3" aria-label="Default select example" name="tipoReservacion" #tipoReservacion="ngModel" [(ngModel)]="reservationId.tipoReservacion">
+            <option *ngFor="let typeReserv of getReservationType" [value]="typeReserv._id"> {{typeReserv.nombre}} </option>
+          </select>
+          <label for="inputAdmin" class="form-label">Evento</label>
+          <select class="form-select mb-3" aria-label="Default select example" name="evento" #evento="ngModel" [(ngModel)]="reservationId.evento">
+            <option *ngFor="let events of getEventos" [value]="events._id"> {{events.nombre}} </option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="editReservation()"
+          ><i class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

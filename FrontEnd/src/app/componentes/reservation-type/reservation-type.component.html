@@ -1,0 +1,131 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-outline-success" type="button" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'"
+          data-bs-toggle="modal" data-bs-target="#agregarReservationType">Agregar un Tipo Reservación</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12 col-sm-4" *ngFor="let typeReserv of reservationType">
+      <div class="card mb-3" style="max-width: 21rem;">
+        <div class="card-header">
+          <h5 class="card-title"> {{typeReserv.nombre}} </h5>
+          <small *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">
+            <div class="dropdown">
+              <button class="btn btn-light btn-sm" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-caret-right-fill"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#eliminarReservationType" (click)="obtenerTipoReservacion(typeReserv._id)">Eliminar</a></li>
+              </ul>
+            </div>
+          </small>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Precio: Q{{typeReserv.precio}} </p>
+          <button class="btn btn-outline-dark" type="button"
+            [routerLink]=" ['/service-in-reservation', typeReserv._id] ">Servicios</button>
+        </div>
+        <div class="card-footer text-center" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">
+          <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#agregarServicio"
+            (click)="obtenerTipoReservacion(typeReserv._id)">Agregar Servicio</button>
+        </div>
+        <div class="card-footer text-center" *ngIf="_usuarioService.getIdentidad().rol === 'Rol_Cliente'">
+          Todo se acomoda a tu bolsillo
+        </div>
+        <div class="card-footer text-center" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_Hotel' ">
+          Todo se acomoda a tu bolsillo
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para agregar un tipo de reservación-->
+<div class="modal fade" id="agregarReservationType" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar un Tipo de Reservación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="inputNombre" class="form-label">Nombre</label>
+            <input type="email" placeholder="Ingrese el nombre" class="form-control" id="inputNombre" name="nombre"
+              #nombre="ngModel" [(ngModel)]="reservationTypeAdd.nombre">
+          </div>
+          <label for="inputNombre" class="form-label">Precio</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Q</span>
+            <input type="text" class="form-control" placeholder="Ingrese el precio, solamente valor numérico" name="precio" #precio="ngModel"
+              [(ngModel)]="reservationTypeAdd.precio">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="addReservationType()"><i
+            class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para agregar servicios al tipo de reservación-->
+<div class="modal fade" id="agregarServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Servicios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <label for="inputAdmin" class="form-label">Servicios</label>
+          <select class="form-select mb-3" aria-label="Default select example" name="servicio" #servicio="ngModel"
+            [(ngModel)]="modeloServicio.servicio">
+            <option *ngFor="let service of servicios" [value]="service._id">{{service.nombre}}</option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal"
+          (click)="serviceInReservationType()"><i class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal para eliminar el Tipo de Reservación-->
+<div class="modal fade" id="eliminarReservationType" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar el Tipo de Reservación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar el Tipo de Reservación: <b> {{reservationTypeId.nombre}} </b> ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i>
+          Cancelar</button>
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal"
+          (click)="deleteReservationType(reservationTypeId._id)"><i class="bi bi-check2"></i>
+          Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

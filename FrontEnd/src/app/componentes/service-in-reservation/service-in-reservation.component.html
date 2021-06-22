@@ -1,0 +1,34 @@
+<br>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-6">
+      <form>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" #nombre="ngModel" [(ngModel)]="reservationtypeModel.nombre" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="Precio" class="form-label">Precio</label>
+          <input type="text" class="form-control" id="exampleInputPassword1" name="precio" #precio="ngModel" [(ngModel)]="reservationtypeModel.precio" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="Precio" class="form-label">Servicios:</label>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reservType of reservationtypeModel.servicios">
+              <th> {{reservType.servicio.nombre}} </th>
+              <td> {{reservType.servicio.description}} </td>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>

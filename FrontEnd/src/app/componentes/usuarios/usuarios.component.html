@@ -1,0 +1,152 @@
+<br>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="col col-lg-8">
+    <div class="input-group mb-3" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="form-control" placeholder="Search for name, email or user..." name="seeUsers"
+        [(ngModel)]="seeUsers">
+    </div>
+    <h4 *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">Administradores de Hotel:</h4>
+    <hr *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">
+    <table class="table table-striped table-hover" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">
+      <thead>
+        <tr>
+          <th scope="row">Nombre</th>
+          <th scope="col">Email</th>
+          <th scope="col">Usuario</th>
+          <th scope="col" *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admins of AdminsHotel | users: seeUsers">
+          <td> {{admins.nombre}} </td>
+          <td> {{admins.email}} </td>
+          <td> {{admins.usuario}} </td>
+          <td *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'"> <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarUsuario" (click)="obtenerUsuario(admins._id)"><i class="bi bi-pencil-square"></i> Editar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminarUsuario" (click)="obtenerUsuario(admins._id)"><i class="bi bi-trash"></i> Eliminar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verUsuario" (click)="obtenerUsuario(admins._id)"><i class="bi bi-eye"></i> Ver</button>
+          </div> </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="input-group mb-3">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="form-control" placeholder="Search for name, email or user..." name="seeClients" [(ngModel)]="seeClients">
+    </div>
+    <h4>Clientes</h4>
+    <hr>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Email</th>
+          <th scope="col">Usuario</th>
+          <th scope="col" *ngIf="_usuarioService.getIdentidad().rol ==='Admin_App'">Acciones</th>
+          <th scope="col" *ngIf="_usuarioService.getIdentidad().rol ==='Admin_Hotel'">Reservaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let clients of Clientes | clients: seeClients">
+          <td> {{clients.nombre}} </td>
+          <td> {{clients.email}} </td>
+          <td> {{clients.usuario}} </td>
+          <td *ngIf="_usuarioService.getIdentidad().rol === 'Admin_App'"><div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarUsuario" (click)="obtenerUsuario(clients._id)"><i class="bi bi-pencil-square"></i> Editar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminarUsuario" (click)="obtenerUsuario(clients._id)"><i class="bi bi-trash"></i> Eliminar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verUsuario" (click)="obtenerUsuario(clients._id)"><i class="bi bi-eye"></i> Ver</button>
+          </div></td>
+          <td *ngIf="_usuarioService.getIdentidad().rol === 'Admin_Hotel'"><div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary" [routerLink]="['/reservationOfUser', clients._id]"><i class="bi bi-eye"></i> Ver</button>
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para ver el usuario -->
+<div class="modal fade" id="verUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ver Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="Id" class="form-label">Id</label>
+            <input type="text" class="form-control" id="Id" name="id" #id="ngModel" [(ngModel)]="usuarioModel._id" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="nombreSee" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombreSee" name="nombre" #nombre="ngModel" [(ngModel)]="usuarioModel.nombre" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="emailSee" class="form-label">Email</label>
+            <input type="email" class="form-control" id="emailSee" name="email" #email="ngModel" [(ngModel)]="usuarioModel.email" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="usuarioSee" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="usuarioSee" name="usuario" #usuario="ngModel" [(ngModel)]="usuarioModel.usuario" disabled>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar el usuario -->
+<div class="modal fade" id="editarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nombreSee2" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombreSee2" name="nombre" #nombre="ngModel" [(ngModel)]="usuarioModel.nombre">
+          </div>
+          <div class="mb-3">
+            <label for="emailSee2" class="form-label">Email</label>
+            <input type="email" class="form-control" id="emailSee2" name="email" #email="ngModel" [(ngModel)]="usuarioModel.email">
+          </div>
+          <div class="mb-3">
+            <label for="usuarioSee2" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="usuarioSee2" name="usuario" #usuario="ngModel" [(ngModel)]="usuarioModel.usuario">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>`
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="editUsuario()"><i class="bi bi-check"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar el usuario -->
+<div class="modal fade" id="eliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar el usuario de: <b>{{usuarioModel.nombre}}</b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i class="bi bi-x"></i> Cerrar</button>`
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" (click)="deleteUsuario(usuarioModel._id)"><i class="bi bi-check"></i> Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center addHotel">
+    <div class="col col-lg-4">
+      <form>
+        <div class="mb-3">
+          <label for="inputNombre" class="form-label">Nombre</label>
+          <input type="email" placeholder="Ingrese el nombre de su hotel" class="form-control" id="inputNombre" name="nombre" #nombre="ngModel" [(ngModel)]="addHotel.nombre">
+        </div>
+        <div class="mb-3">
+          <label for="inputDireccion" class="form-label">Dirección</label>
+          <input type="text" placeholder="Ingrese la dirección del hotel" class="form-control" id="inputDireccion" name="direccion" #direccion="ngModel" [(ngModel)]="addHotel.direccion">
+        </div>
+        <label for="inputAdmin" class="form-label">Administrador del hotel</label>
+        <select class="form-select mb-3" aria-label="Default select example" name="admin" #admin="ngModel" [(ngModel)]="addHotel.admin">
+          <option *ngFor="let clientes of getClientes" [value]="clientes._id"> {{clientes.nombre}} </option>
+        </select>
+        <button type="button" class="btn btn-outline-secondary" (click)="agregarHotel()"><i class="bi bi-save-fill"></i> Agregar Hotel</button>
+      </form>
+    </div>
+  </div>
+</div>
